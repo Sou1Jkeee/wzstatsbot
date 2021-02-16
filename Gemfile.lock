@@ -10,15 +10,19 @@ GEM
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     equalizer (0.0.11)
-    faraday (1.0.1)
+    faraday (1.3.0)
+      faraday-net_http (~> 1.0)
       multipart-post (>= 1.2, < 3)
+      ruby2_keywords
+    faraday-net_http (1.0.1)
     ice_nine (0.11.2)
     inflecto (0.0.2)
     mini_portile2 (2.4.0)
     multipart-post (2.1.1)
     nokogiri (1.10.10)
       mini_portile2 (~> 2.4.0)
-    telegram-bot-ruby (0.12.0)
+    ruby2_keywords (0.0.4)
+    telegram-bot-ruby (0.14.0)
       faraday
       inflecto
       virtus
@@ -33,8 +37,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  nokogiri
-  telegram-bot-ruby
+  nokogiri (~> 1.10.10)
+  telegram-bot-ruby (~> 0.14.0)
 
 BUNDLED WITH
-   2.1.4
+   2.2.10
