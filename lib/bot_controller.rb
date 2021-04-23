@@ -11,8 +11,8 @@ class BotController
   def listen
     @bot.run(BOT_TOKEN) do |bot|
       bot.listen do |message|
-        case message.text
-        when '/start', 'start', 'help', '/help'
+        case message
+        when '/start', '/help'
           bot.api.send_message(
             chat_id: message.chat.id,
             text: "Здравствуй, #{message.from.username}\n" \
@@ -20,12 +20,12 @@ class BotController
           )
         else
           begin
-          user = username(message.text)
+          user = username(message[:text])
           stats = parse_stats(create_link(user))
 
           bot.api.send_message(
             chat_id: message.chat.id,
-            text: "Статистика пользователя #{user}:\n#{stats}"
+            text: "Статистика пользователя #{user.gsub('%20', ' ')}:\n#{stats}"
           )
           rescue URI::InvalidURIError
             bot.api.send_message(
@@ -50,7 +50,7 @@ class BotController
   end
 
   def create_link(username, platform = 'xbl')
-    "https://cod.tracker.gg/warzone/profile/#{platform}/#{username}/overview"
+    "https://cod.tracker.gg/warzone/profile/#{platform}/#{username}/detailed"
   end
 
   def parse_stats(link)
