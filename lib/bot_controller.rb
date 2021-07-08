@@ -1,59 +1,57 @@
 require 'telegram/bot'
 
 class BotController
-  BOT_TOKEN = ENV['BOT_TOKEN']
+  class << self
+    BOT_TOKEN = ENV['BOT_TOKEN']
 
-  def initialize
-    @bot = Telegram::Bot::Client
-    @listen = listen
-  end
+    def run
+      @bot = Telegram::Bot::Client
+      listen
+    end
 
-  def listen
-    @bot.run(BOT_TOKEN) do |bot|
-      bot.listen do |message|
-        case message
-        when '/start', '/help'
-          bot.api.send_message(
-            chat_id: message.chat.id,
-            text: "Здравствуй, #{message.from.username}\n" \
-                  "Для того чтобы получить свежую статистику отправь мне свой ник в Xbox Live"
-          )
-        else
-          begin
-          user = username(message[:text])
-          stats = parse_stats(create_link(user))
-
-          bot.api.send_message(
-            chat_id: message.chat.id,
-            text: "Статистика пользователя #{user.gsub('%20', ' ')}:\n#{stats}"
-          )
-          rescue URI::InvalidURIError
+    def listen
+      @bot.run(BOT_TOKEN) do |bot|
+        bot.listen do |message|
+          case message.text
+          when '/start', '/help'
             bot.api.send_message(
               chat_id: message.chat.id,
-              text: "Некорректный ник",
+              text: "Здравствуй, #{message.from.username}\n" \
+                    "Для того чтобы получить свежую статистику отправь мне свой ник в Xbox Live"
             )
-          rescue OpenURI::HTTPError
+          else
+            begin
+            username = fix_username(message.text)
+            stats = get_data(username)
+
             bot.api.send_message(
               chat_id: message.chat.id,
-              text: "Пользователь не найден",
+              text: "Статистика пользователя #{username.gsub('%20', ' ')}:\n#{stats}"
             )
+            rescue URI::InvalidURIError
+              bot.api.send_message(
+                chat_id: message.chat.id,
+                text: "Некорректный ник",
+              )
+            rescue OpenURI::HTTPError
+              bot.api.send_message(
+                chat_id: message.chat.id,
+                text: "Пользователь не найден",
+              )
+            end
           end
         end
       end
     end
-  end
 
-  private
+    private
 
-  def username(user)
-    user.split.join('%20')
-  end
-
-  def create_link(username, platform = 'xbl')
-    "https://cod.tracker.gg/warzone/profile/#{platform}/#{username}/detailed"
-  end
-
-  def parse_stats(link)
-    StatsParser.parse_data(link)
-  end
+    def fix_username(user)
+      user.split.join('%20')
+    end
+    
+    def get_data(username)
+      StatsParser.run(username)
+    end
+  end  
 end
