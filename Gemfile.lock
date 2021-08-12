@@ -41,4 +41,4 @@ DEPENDENCIES
   telegram-bot-ruby (~> 0.14.0)
 
 BUNDLED WITH
-   2.2.10
+   2.2.24
