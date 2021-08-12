@@ -34,11 +34,13 @@ GEM
       equalizer (~> 0.0, >= 0.0.9)
 
 PLATFORMS
-  ruby
+  x86_64-darwin-19
+  x86_64-darwin-20
+  x86_64-linux
 
 DEPENDENCIES
   nokogiri (~> 1.10.10)
   telegram-bot-ruby (~> 0.14.0)
 
 BUNDLED WITH
-   2.2.10
+   2.2.24

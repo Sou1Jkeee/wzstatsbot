@@ -14,7 +14,7 @@ class StatsParser
     end
 
      def parse_data(link)
-      html = open(link)
+      html = URI.open(link)
       doc = Nokogiri::HTML(html)
       arr = [doc.css('.main').first, doc.css('.giant-stats')]
       stats = []
