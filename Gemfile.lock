@@ -17,10 +17,12 @@ GEM
     faraday-net_http (1.0.1)
     ice_nine (0.11.2)
     inflecto (0.0.2)
-    mini_portile2 (2.4.0)
+    mini_portile2 (2.8.0)
     multipart-post (2.1.1)
-    nokogiri (1.10.10)
-      mini_portile2 (~> 2.4.0)
+    nokogiri (1.13.9)
+      mini_portile2 (~> 2.8.0)
+      racc (~> 1.4)
+    racc (1.6.0)
     ruby2_keywords (0.0.4)
     telegram-bot-ruby (0.14.0)
       faraday
@@ -37,7 +39,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  nokogiri (~> 1.10.10)
+  nokogiri (~> 1.13.9)
   telegram-bot-ruby (~> 0.14.0)
 
 BUNDLED WITH
